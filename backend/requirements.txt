@@ -1,0 +1,9 @@
+fastapi
+uvicorn 
+langchain_classic
+langchain_huggingface
+langchain_chroma
+chromadb
+pymupdf
+sentence-transformers
+python-multipart

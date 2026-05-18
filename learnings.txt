@@ -1,0 +1,1 @@
+IndexedDB for client/browser side storage for initial mvps and faster rendering instead of server Databases.
