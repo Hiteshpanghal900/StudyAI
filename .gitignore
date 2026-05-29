@@ -2,4 +2,4 @@ backend/.env
 backend/chroma_db
 backend/uploads
 frontend/.env.local
-*pyc
+**/__pycache__/
