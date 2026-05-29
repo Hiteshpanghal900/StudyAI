@@ -3,6 +3,8 @@ uvicorn
 langchain_classic
 langchain_huggingface
 langchain_chroma
+langchain_groq
+langchain_core
 chromadb
 pymupdf
 sentence-transformers

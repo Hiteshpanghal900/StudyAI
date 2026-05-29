@@ -1,11 +1,15 @@
-import os
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from fastapi.staticfiles import StaticFiles
 
-from app.rag import ask_question, process_pdf
+from app.route import router
+from app.storage import UPLOADS_DIR, reset_runtime_storage
+
+reset_runtime_storage()
 
 app = FastAPI()
+app.include_router(router)
+app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
 
 app.add_middleware(
     CORSMiddleware,
@@ -14,28 +18,3 @@ app.add_middleware(
     allow_headers=["*"],
     allow_credentials=True,
 )
-
-@app.post("/upload")
-async def upload_file(file: UploadFile = File(...)):
-    os.makedirs("uploads", exist_ok=True)
-
-    filepath = f"uploads/{file.filename}"
-
-    with open(filepath, "wb") as f:
-        f.write(await file.read())
-
-    process_pdf(filepath)
-
-    return {
-        "message": "File uploaded successfully",
-    }
-
-class ChatRequest(BaseModel):
-    question: str
-
-@app.post("/chat")
-async def chat(query: dict):
-    answer = ask_question(query["question"])
-    return {
-        "answer": answer,
-    }
